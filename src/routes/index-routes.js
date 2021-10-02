@@ -45,6 +45,11 @@ router.post('/logout', function (req, res) {
 
 router.get('/my-persons', verifyJWT, (req, res, next) => {
     let userId = getIdByToken(req);
+    
+    if(!userId) {
+        return res.status(401).json({ error: 'Invalid token' });
+    }
+    
     let persons = db.persons.filter(person => person.id === userId);
 
     const total = persons[0].my_persons.length;
